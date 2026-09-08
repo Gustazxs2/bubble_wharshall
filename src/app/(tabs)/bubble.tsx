@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, ScrollView, StyleSheet, Text, TextInput } from "react-native";
 
 export default function HomeScreen() {
   const [numeros, setNumeros] = useState<number[]>([]);
@@ -8,17 +8,27 @@ export default function HomeScreen() {
   const [comparaçoesBubble, setComparacoesBubble] = useState(0);
   const [trocasBubble, setTrocasBubble] = useState(0);
   const [temposBubbles, setTempoBubble] = useState(0);
+  const [quantidadeNumeros, setQuantidadeNumeros] = useState("10");
 
   function gerarNumeros() {
+    const quantidade = Number(quantidadeNumeros);
+
+    if (quantidade < 2 || quantidade > 10000) {
+      return;
+    }
+
     const novoVetor = [];
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < quantidade; i++) {
       const numeroAleatorio = Math.floor(Math.random() * 100);
-
       novoVetor.push(numeroAleatorio);
     }
 
     setNumeros(novoVetor);
+    setNumerosOrdenados([]);
+    setComparacoesBubble(0);
+    setTrocasBubble(0);
+    setTempoBubble(0);
   }
 
   function bubbleSort() {
@@ -51,11 +61,29 @@ export default function HomeScreen() {
     setTrocasBubble(trocas);
     setTempoBubble(fim - inicio);
   }
-  return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}>Trabalho de Algoritmos</Text>
 
+  function limparTela() {
+    setNumeros([]);
+    setNumerosOrdenados([]);
+    setComparacoesBubble(0);
+    setTrocasBubble(0);
+    setTempoBubble(0);
+    setQuantidadeNumeros("10");
+  }
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.titulo}>Trabalho de Algoritmos</Text>
+      <Button title="Limpar" onPress={limparTela} />
       <Text style={styles.texto}>Bubble Sort</Text>
+
+      <Text style={styles.label}>Quantidade de números:</Text>
+
+      <TextInput
+        style={styles.input}
+        value={quantidadeNumeros}
+        onChangeText={setQuantidadeNumeros}
+        keyboardType="numeric"
+      />
 
       <Button title="Gerar números" onPress={gerarNumeros} />
       <Text style={styles.resultado}>{numeros.join(", ")}</Text>
@@ -71,13 +99,13 @@ export default function HomeScreen() {
       <Text style={styles.info}>trocas: {trocasBubble}</Text>
 
       <Text style={styles.info}>tempo: {temposBubbles.toFixed(4)} ms</Text>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -105,5 +133,20 @@ const styles = StyleSheet.create({
 
   complexidade: {
     fontSize: 25,
+  },
+
+  label: {
+    fontSize: 18,
+    marginTop: 15,
+  },
+
+  input: {
+    width: 120,
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 8,
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 10,
   },
 });

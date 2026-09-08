@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Button, ScrollView, StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 export default function FloydScreen() {
   const [matriz, setMatriz] = useState<number[][]>([]);
@@ -72,9 +79,19 @@ export default function FloydScreen() {
     setTempoFloyd(fim - inicio);
   }
 
+  function limparTela() {
+    setMatriz([]);
+    setMatrizResultado([]);
+    setOperacoesFloyd(0);
+    setTempoFloyd(0);
+    setQuantidadeVertices("5");
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.titulo}>Floyd-Warshall</Text>
+
+      <Button title="Limpar" onPress={limparTela} />
 
       <Text style={styles.label}>Quantidade de vértices:</Text>
 
@@ -162,21 +179,20 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     marginTop: 15,
-
   },
 
   label: {
-  fontSize: 18,
-  marginTop: 15,
-},
+    fontSize: 18,
+    marginTop: 15,
+  },
 
-input: {
-  width: 120,
-  borderWidth: 1,
-  borderRadius: 5,
-  padding: 8,
-  fontSize: 18,
-  textAlign: "center",
-  marginBottom: 10,
-},
+  input: {
+    width: 120,
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 8,
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 10,
+  },
 });
